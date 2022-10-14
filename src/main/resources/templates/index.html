@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>CSV Comparision</title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+.EQUAL {
+	background: #68d301;
+	color: black;
+	grid-column: 1;
+}
+
+.DELETE {
+	background: #ef4f4f;
+	color: black;
+	grid-column: 1;
+}
+
+.INSERT {
+	background: Yellow;
+	color: black;
+	grid-column: 1;
+}
+</style>
+</head>
+<body>
+	<section class="my-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 mx-auto">
+					<h2>Upload File Example</h2>
+					<p th:text="${message}" th:if="${message ne null}"
+						class="alert alert-primary"></p>
+					<form method="post"
+						th:action="@{/v1.0/appopsservice/cmdb/fileupload}"
+						enctype="multipart/form-data">
+						<div class="row">
+							<div class="col-sm-4 form-group">
+								<input type="file" name="file" class="form-control-file" />
+							</div>
+							<div class="col-sm-4 form-group">
+								<input type="file" name="file" class="form-control-file" />
+							</div>
+							<div class="col-sm-4">
+								<button type="submit" class="btn btn-primary">Upload
+									File</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="my-5">
+		<div class="container">
+			<div class="row" th:if="${inventory != null}">
+				<h1>Inventory</h1>
+
+				<div class="col-sm-4">
+					<ol>
+						<li th:each="item : *{inventory.left}" th:text="${item.hostname}"></li>
+					</ol>
+				</div>
+				<div class="col-sm-4">
+					<ol>
+						<li th:each="item : *{inventory.right}" th:text="${item.hostname}"></li>
+					</ol>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<div class="container">
+		<div class="row">
+			<h1>Comparison</h1>
+			<ol>
+				<li th:each="item: ${diff}" th:classappend="${item.tag}">
+					<div class="col-sm-4">
+						<span th:text="${item.tag}"></span>
+					</div>
+					<div class="col-sm-4">
+						<span th:text="${item.oldLine}"></span>
+					</div>
+					<div class="col-sm-4">
+						<span th:text="${item.newLine}"></span>
+					</div>
+				</li>
+			</ol>
+		</div>
+	</div>
+</body>
+</html>
